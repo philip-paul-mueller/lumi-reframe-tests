@@ -19,18 +19,14 @@ from pathlib import Path
 from rocketchat_API.rocketchat import RocketChat
 
 
-USER_ID: str = ""
-"""ID of the user that should make the post."""
-
-ROOM_ID: str = ""
-"""The ID of the room where the massage should be posted."""
-
 SERVER_URL: str = "https://chat.csc.fi"
 """The URL where the Rocket-Chat server is running on."""
 
 
 def main(
     API_token: Optional[str],
+    room_id: str,
+    user_id: str,
     message_file: Path,
 ) -> int:
     """Post the content of `message_file` on the Rocket-Chat.
@@ -38,11 +34,10 @@ def main(
     Args:
         API_token: The token that should be used to authenticate the posting.
             If not given it will be read from the variable `ROCKET_CHAT_TOKEN`.
+        room_id: The room/channel where we should do the posting.
+        user_id: ID of the user that should do the post.
         message_file: The file containing the body of the message.
     """
-    assert USER_ID, "The `USER_ID` has not been configured."
-    assert ROOM_ID, "The `ROOM_ID` has not been configured."
-
     if not message_file.exists():
         raise FileNotFoundError(
             f"The file containing the message's body, '{message_file}', could not be located."
@@ -60,14 +55,14 @@ def main(
         message_body = "".join(F.readlines())
 
     rocket = RocketChat(
-        user_id=USER_ID,
+        user_id=user_id,
         auth_token=API_token,
         server_url=SERVER_URL,
     )
 
     result: dict[str, Any] = rocket.chat_post_message(
         message_body,
-        room_id=ROOM_ID,
+        room_id=room_id,
     ).json()
 
     if result.get("success", False):
@@ -93,12 +88,26 @@ if __name__ == "__main__":
         help="File containing the body of the post that should be made.",
         type=Path,
     )
+    args.add_argument(
+        "--room", "--room-id",
+        dest="room_id",
+        help="The ID of the room where we the post should be done.",
+        type=str,
+    )
+    args.add_argument(
+        "--user", "--user-id",
+        dest="user_id",
+        help="The ID of the user that does the posting.",
+        type=str,
+    )
 
     parsed_args = args.parse_args()
 
     sys.exit(
         main(
             API_token=parsed_args.API_token,
+            room_id=parsed_args.room_id,
+            user_id=parsed_args.user_id,
             message_file=parsed_args.message_file,
         )
     )
