@@ -1,0 +1,2 @@
+The ReFrame tests succeeded.
+
