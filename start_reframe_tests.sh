@@ -8,13 +8,32 @@ ROOM_ID=""
 # This is the folder in which we started.
 SCRIPT_FOLDER="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
 
-if ! hash reframe
+# Ensure that reframe is installed.
+if ! hash reframe >/dev/null 2>&1
 then
 	echo "The 'reframe' command was not found." >&2
 	exit 2
 fi
 
-# Look for the falg `--no-rocket-chat-post` flag to disable the posting.
+# Ensure that the Rocket-Chat API client is installed
+if ! python -c 'import sys ; import rocketchat_API; sys.exit(0)' >/dev/null 2>&1
+then
+	echo "It seems that the 'rocketchat_API' Python package is not installed." >&2
+	exit 2
+fi
+
+if [ -z "${USER_ID}" ] || [ -z "${ROOM_ID}" ]
+then
+	echo "You must set the 'USER_ID' and 'ROOM_ID' value in '$0'." >&2
+	exit 3
+fi
+if [ -z "${ROCKET_CHAT_TOKEN}" ]
+then
+	echo "You must set the 'ROCKET_CHAT_TOKEN' environment variable." >&2
+	exit 4
+fi
+
+# Look for the `--no-rocket-chat-post` flag to disable the posting.
 #  Collect the other arguments into `REFRAME_ARGS`
 DO_ROCKET_CHAT_POSTING=1
 declare -a REFRAME_ARGS=()
