@@ -24,7 +24,7 @@ do
 	then
 		DO_ROCKET_CHAT_POSTING=0
 	else
-		REFRAME_ARGS+=( "${iARGS}" )
+		REFRAME_ARGS+=( "${iARG}" )
 	fi
 done
 
