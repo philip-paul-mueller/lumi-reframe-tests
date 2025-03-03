@@ -8,3 +8,6 @@ stage/
 __pycache__
 
 
+# Ignoring stuff during development.
+TEST_RUN/
+
