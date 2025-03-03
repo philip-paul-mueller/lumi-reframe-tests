@@ -38,6 +38,9 @@ def main(
         user_id: ID of the user that should do the post.
         message_file: The file containing the body of the message.
     """
+    assert len(room_id) != 0
+    assert len(user_id) != 0
+
     if not message_file.exists():
         raise FileNotFoundError(
             f"The file containing the message's body, '{message_file}', could not be located."
