@@ -20,6 +20,10 @@ class lumi_gromacs_stmv(rfm.RunOnlyRegressionTest):
 
     valid_systems = ['lumi:gpu']
     valid_prog_environs = ['cpeAMD']
+    # It seems that GROMACS is an EasyBuild recipe, however, this test does not provide
+    #  a build system, so it must first be installed manually. There are several problems:
+    #   - After an update the binary might not be recompiled, so we would test the old version.
+    #   - We have to hard code certain configuration options, such as the rocm version.
 
     release_environ = parameter(['production', 'leading']) 
 

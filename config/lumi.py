@@ -7,6 +7,9 @@ site_configuration = {
             'descr': 'LUMI Cray EX Supercomputer',
             'hostnames': ['ln\d+-nmn', 'uan\d+-nmn.local', '\S+'],
             'modules_system': 'lmod',
+            # This module is not loaded by writting it into the batch file.
+            #  Instead it calls `module` to get the instructions for python,
+            #  essentially the code of how to manipulate `os.environ[...]`.
             'modules': ['LUMI'],
             'resourcesdir': '/projappl/%s/' % project,
             'partitions': [
@@ -50,6 +53,9 @@ site_configuration = {
                     'modules': ['partition/C'],
                     'access': ['--partition small',
                                f'--account={project}'],
+                    # These are associated to the `extra_resouses` member of a test. It is important that
+                    #  they only emit code if it is present. For example the below resources can be specified
+                    #  by specifing `extra_resources = { 'memory': {'mem_per_node': 1000}}`.
                     'resources': [
                         {
                             'name': 'memory',
@@ -278,6 +284,7 @@ site_configuration = {
             'check_search_path': ['checks/'],
             'check_search_recursive': True,
             'remote_detect': False,
+            #'purge_environment': True,
         }
     ]
 }
