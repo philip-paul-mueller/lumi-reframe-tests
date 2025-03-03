@@ -1,0 +1,10 @@
+# Ignore some reframe related files
+perflogs/
+reframe.log
+reframe.out
+stage/
+
+# Ignore some python specific files
+__pycache__
+
+
