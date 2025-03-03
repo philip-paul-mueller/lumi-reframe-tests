@@ -5,7 +5,7 @@
 USER_ID=""
 ROOM_ID=""
 
-
+# This is the folder in which we started.
 SCRIPT_FOLDER="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
 
 if ! hash reframe
