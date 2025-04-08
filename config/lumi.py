@@ -53,9 +53,6 @@ site_configuration = {
                     'modules': ['partition/C'],
                     'access': ['--partition small',
                                f'--account={project}'],
-                    # These are associated to the `extra_resouses` member of a test. It is important that
-                    #  they only emit code if it is present. For example the below resources can be specified
-                    #  by specifing `extra_resources = { 'memory': {'mem_per_node': 1000}}`.
                     'resources': [
                         {
                             'name': 'memory',
@@ -119,8 +116,11 @@ site_configuration = {
                     ],
                     'max_jobs': 10,
                     'modules': ['partition/G'],
-                    'access': ['--partition small-g',
-                               f'--account={project}'],
+                    'access': [
+                        #'--partition small-g',
+                        '--partition standard-g',
+                        f'--account={project}',
+                    ],
                     'resources': [
                         {
                             'name': 'memory',
