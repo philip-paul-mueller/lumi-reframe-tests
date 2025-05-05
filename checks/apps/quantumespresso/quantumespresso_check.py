@@ -7,6 +7,15 @@ class quantumespresso_check(rfm.RunOnlyRegressionTest):
     executable = 'pw.x'
     executable_opts += ['-in', 'ausurf.in', '-pd', '.true.']
     maintainers = ['mszpindler']
+    prerun_cmds = ['env']
+
+    @run_before('run')
+    def set_pseudo_potential_dir(self):
+        assert self.stagedir is not None
+        # We have to tell QE where it finds the pseudo potential file.
+        #  The documentation claims we have to set `PSEUDO_DIR` which is wrong,
+        #  see also https://gitlab.com/QEF/q-e/-/issues/785
+        self.env_vars['ESPRESSO_PSEUDO'] = f'{self.stagedir}'
 
     @sanity_function
     def assert_simulation_success(self):
